@@ -2,12 +2,9 @@ version: '3.9'
 
 networks:
   backend:
-  ejwdockerservices:
+  npm:
     external: true
-    name: ejwdockerservices
-  backup:
-    external: true
-    name: backup
+    name: npm
 
 services:
   php:
@@ -46,7 +43,7 @@ services:
         condition: service_started
     networks:
       - backend
-      - nginxproxymanager
+      - npm
 
   database:
     # pinned to MariaDB 10.11 LTS
