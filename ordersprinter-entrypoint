@@ -1,0 +1,44 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+
+if [[ "$@" = "php-fpm" ]]; then
+	ROOT=/var/www/html
+
+	if [[ "$(ls -A $ROOT)" ]]; then
+		echo "Use existing ordersprinter files"
+	else
+		echo "Download ordersprinter files"
+
+		cd $ROOT
+		VERSION=$(curl -s https://www.ordersprinter.de/update/updateinfo.txt | head -n 1 | tr "." "_")
+		echo "Latest version: $VERSION"
+		if [[ -z "$VERSION" ]]; then
+			echo "Cannot fetch version"
+			exit 1
+		fi
+
+		curl -o os.zip https://www.ordersprinter.de/ordersprinter-${VERSION}.zip
+		# unzip and extract only the subfolder for gastsystem since we don't need all other components
+		unzip os.zip 'gastsystem/*' 'gastsystem/**/*' -d .
+		rm os.zip
+
+		echo "Generate config1.php"
+		CONFIG1_PHP=gastsystem/php/config1.php
+		cp gastsystem/php/config.php $CONFIG1_PHP
+		sed -i "s/'CODE', '123456xxx'/'CODE', '$CODE'/g" $CONFIG1_PHP
+		sed -i "s/'DB','file'/'DB','$DB'/g" $CONFIG1_PHP
+		sed -i "s/'MYSQL_HOST','localhost'/'MYSQL_HOST','$MYSQL_HOST'/g" $CONFIG1_PHP
+		sed -i "s/'MYSQL_USER',  'guestsystem'/'MYSQL_USER', '$MYSQL_USER'/g" $CONFIG1_PHP
+		sed -i "s/'MYSQL_PASSWORD',  'verysecret'/'MYSQL_PASSWORD', '$MYSQL_PASS'/g" $CONFIG1_PHP
+		sed -i "s/'MYSQL_DB', 'guestdb'/'MYSQL_DB', '$MYSQL_DB'/g" $CONFIG1_PHP
+
+		chown -R www-data: gastsystem
+	fi
+fi
+
+exec "$@"
