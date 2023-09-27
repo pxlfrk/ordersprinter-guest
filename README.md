@@ -53,9 +53,9 @@ If you use [Portainer](https://github.com/portainer/portainer) for your Docker h
 
 Now you can provide the following information.
 
-- Name: ordersprinter-guestordersystem (or whatever you like)
-- Repository URL: https://github.com/pxlfrk/ordersprinter-guest
-- Repository reference: refs/heads/main
+- Name: `ordersprinter-guestordersystem` (or whatever you like)
+- Repository URL: `https://github.com/pxlfrk/ordersprinter-guest`
+- Repository reference: `refs/heads/main`
 - Environment variables: See ``.env`` file settings above
 
 > [!NOTE]  
