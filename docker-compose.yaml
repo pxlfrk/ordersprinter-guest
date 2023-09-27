@@ -1,0 +1,76 @@
+version: '3.9'
+
+networks:
+  backend:
+  ejwdockerservices:
+    external: true
+    name: ejwdockerservices
+  backup:
+    external: true
+    name: backup
+
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    restart: unless-stopped
+    build:
+      context: .
+    working_dir: /var/www/html
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASS}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_HOST: ${COMPOSE_PROJECT_NAME}_mariadb
+      CODE: ${CODE}
+      DB: ${DB}
+    volumes:
+      - ./php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini:ro
+      - ./fpm.conf:/usr/local/etc/php-fpm.d/zz-fpm.conf:ro
+      - ./ordersprinter-entrypoint:/usr/local/bin/docker-php-entrypoint:ro
+      - data:/var/www/html
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:1.24.0-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    restart: unless-stopped
+    volumes:
+      - data:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./favicon.ico:/favicon.ico:ro
+    depends_on:
+      php:
+        condition: service_started
+      database:
+        condition: service_started
+    networks:
+      - backend
+      - nginxproxymanager
+
+  database:
+    # pinned to MariaDB 10.11 LTS
+    image: mariadb:10.11.5
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_AUTO_UPGRADE: 1
+      MARIADB_DATABASE: ${MYSQL_DB}
+      MARIADB_USER: ${MYSQL_USER}
+      MARIADB_PASSWORD: ${MYSQL_PASS}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u ${MYSQL_USER} --password=${MYSQL_PASS}
+      interval: 10s
+      retries: 5
+    networks:
+      - backend
+    # the command for the DB settings need to be in one single line
+    command: --innodb-buffer-pool-size=64M --max_allowed_packet=32M
+
+
+volumes:
+  data:
+  db:
