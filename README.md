@@ -39,24 +39,29 @@ COMPOSE_PROJECT_NAME=ordersprintguest
 > Technically it isn't necessary to use a database as storage option. If you set the value of `DB` to `file`, the system will save your orders in the `db` inside of the container. **Make sure to persist this data by mounting a docker volume, otherwise your data will be lost when the container is recreated or deleted.**
 
 > [!NOTE]  
-> Since the image does ``NOT`` contain the sources of Ordersprinter it will download the newest version and create a volume for this.
+> Since the image does **NOT** contain the sources of Ordersprinter it will download the newest version and create a volume for this.
 
 **DO NOT** remove MariaDB/MySQL volume! Otherwise you should have a backup somewhere else!
 
-1. Start up: ``docker compose up -d --build``
+1. Start up: `docker compose up -d --build`
 
 ### Portainer
 
 If you use [Portainer](https://github.com/portainer/portainer) for your Docker host, you can create a stack via a git repository, too.
 
-``Stacks -> Add stack -> Use a git repository``
+`Stacks -> Add stack -> Use a git repository`
 
 Now you can provide the following information.
 
 - Name: `ordersprinter-guestordersystem` (or whatever you like)
 - Repository URL: `https://github.com/pxlfrk/ordersprinter-guest`
+- Compose path: `docker-compose.yml`
 - Repository reference: `refs/heads/main`
 - Environment variables: See ``.env`` file settings above
+- Enable relative path volumes: `true/enabled`
+
+> [!NOTE]  
+> [Enable relative path volumes](https://docs.portainer.io/user/docker/stacks/add#relative-path-volumes) required the Portainer Business Edition, yes - BUT you can get yourself a free license for up to three nodes 👉 [here](https://www.portainer.io/take-3). 🎉
 
 > [!NOTE]  
 > Switch the Environment-Variables to the Advances mode, paste the content of the `.env.template` and change the values to your fit - this will save you some time!
