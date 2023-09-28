@@ -12,12 +12,26 @@ This repository can be used to simplify the deployment and installation of [Orde
 
 ## Deployment
 
-Based on the [official documentation](https://www.ordersprinter.de/gastbestellung.php), the guestordersystem should be installed separately to the core-system with his own webserver and database. Therefore i recommend deploying the guestordersystem as a separate docker stack in addition to the core-system ordersprinter.
+Based on the [official documentation](https://www.ordersprinter.de/gastbestellung.php), the guestorder-system should be installed separately to the core-system with his own webserver and database. Therefore i recommend deploying the guestorder-system as a separate docker stack in addition to the core-system ordersprinter.
 
 You can either deploy this stack manually or use an container/stack management solution like portainer etc.
 
+### Best Practice
+
+Since this application is required to be internet-facing, so that your customers can reach it from their mobile devices, you should apply additional safety measures.
+
 > [!WARNING]  
-> Since this application will be internet-facing, means reachable from the internet for everyone out there, i stronlgy recommend adding a revery proxy and ssl certificates in front of it. In this example, the `nginx`-Container is added to specific docker network `nginxproxymanager`, in which also the [nginxproxymanager](https://nginxproxymanager.com/) as my preferred reverse proxy is located. But of course, you can choose whichever solution fits your need the best. The web is full of tutorials and guides how to set this up, so i won't cover this here.
+> I stronlgy recommend adding a revery proxy and ssl certificates in front of it. In this example (and also in my personal use-case), the `nginx`-Container is added to specific docker network `npm`, in which also the [nginxproxymanager](https://nginxproxymanager.com/) as my preferred reverse proxy is located. But of course, you can choose whichever solution fits your need the best. The web is full of tutorials and guides how to set this up, so i won't cover this here.
+
+> [!NOTE]  
+> For easier access during installation, you can modify the `compose.yaml` to your needs and at a ports-mapping to the nginx-container, so that the web-ui is reachable via a dedicated port, e.g.
+
+``` yaml
+nginx:
+    ...
+    ports: # disable in production and use revery-proxy instead!
+    - '8080:80'
+`````
 
 ### Manual Deployment
 
@@ -44,6 +58,8 @@ COMPOSE_PROJECT_NAME=ordersprintguest
 **DO NOT** remove MariaDB/MySQL volume! Otherwise you should have a backup somewhere else!
 
 1. Start up: `docker compose up -d --build`
+
+The Web-Interface is now accessible via `http://YOUR-DOMAIN`.
 
 ### Portainer
 
