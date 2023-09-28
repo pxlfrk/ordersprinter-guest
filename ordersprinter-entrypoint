@@ -27,15 +27,15 @@ if [[ "$@" = "php-fpm" ]]; then
 		unzip os.zip 'gastsystem/*' 'gastsystem/**/*' -d .
 		rm os.zip
 
-		echo "Generate config1.php"
-		CONFIG1_PHP=gastsystem/php/config1.php
-		cp gastsystem/php/config.php $CONFIG1_PHP
-		sed -i "s/'CODE', '123456xxx'/'CODE', '$CODE'/g" $CONFIG1_PHP
-		sed -i "s/'DB','file'/'DB','$DB'/g" $CONFIG1_PHP
-		sed -i "s/'MYSQL_HOST','localhost'/'MYSQL_HOST','$MYSQL_HOST'/g" $CONFIG1_PHP
-		sed -i "s/'MYSQL_USER',  'guestsystem'/'MYSQL_USER', '$MYSQL_USER'/g" $CONFIG1_PHP
-		sed -i "s/'MYSQL_PASSWORD',  'verysecret'/'MYSQL_PASSWORD', '$MYSQL_PASS'/g" $CONFIG1_PHP
-		sed -i "s/'MYSQL_DB', 'guestdb'/'MYSQL_DB', '$MYSQL_DB'/g" $CONFIG1_PHP
+		echo "Modify config.php and backup original"
+		CONFIG_PHP=gastsystem/php/config.php
+		cp gastsystem/php/config.php gastsystem/php/config_default.php
+		sed -i "s/'CODE', '123456xxx'/'CODE', '$CODE'/g" $CONFIG_PHP
+		sed -i "s/'DB','file'/'DB','$DB'/g" $CONFIG_PHP
+		sed -i "s/'MYSQL_HOST','localhost'/'MYSQL_HOST','$MYSQL_HOST'/g" $CONFIG_PHP
+		sed -i "s/'MYSQL_USER',  'guestsystem'/'MYSQL_USER', '$MYSQL_USER'/g" $CONFIG_PHP
+		sed -i "s/'MYSQL_PASSWORD',  'verysecret'/'MYSQL_PASSWORD', '$MYSQL_PASS'/g" $CONFIG_PHP
+		sed -i "s/'MYSQL_DB', 'guestdb'/'MYSQL_DB', '$MYSQL_DB'/g" $CONFIG_PHP
 
 		chown -R www-data: gastsystem
 	fi
