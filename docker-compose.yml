@@ -15,12 +15,12 @@ services:
     working_dir: /var/www/html
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-ordersprinterguest}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASS}
-      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER:-guestuser}
+      MYSQL_PASSWORD: ${MYSQL_PASS:-pleaseUseASuperSecurePasswordReplaceMe}
+      MYSQL_DATABASE: ${MYSQL_DB:-guestdb}
       MYSQL_HOST: ${COMPOSE_PROJECT_NAME}_mariadb
-      CODE: ${CODE}
-      DB: ${DB}
+      CODE: ${CODE:-123456}
+      DB: ${DB:-mysql}
     volumes:
       - ./php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini:ro
       - ./fpm.conf:/usr/local/etc/php-fpm.d/zz-fpm.conf:ro
