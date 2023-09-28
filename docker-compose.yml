@@ -16,8 +16,8 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-ordersprinterguest}
       MYSQL_USER: ${MYSQL_USER:-guestuser}
-      MYSQL_PASSWORD: ${MYSQL_PASS:-pleaseUseASuperSecurePasswordReplaceMe}
-      MYSQL_DATABASE: ${MYSQL_DB:-guestdb}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-pleaseUseASuperSecurePasswordReplaceMe}
+      MYSQL_DB: ${MYSQL_DB:-guestdb}
       MYSQL_HOST: ${COMPOSE_PROJECT_NAME}_mariadb
       CODE: ${CODE:-123456}
       DB: ${DB:-mysql}
@@ -55,8 +55,8 @@ services:
       MARIADB_AUTO_UPGRADE: 1
       MARIADB_DATABASE: ${MYSQL_DB}
       MARIADB_USER: ${MYSQL_USER}
-      MARIADB_PASSWORD: ${MYSQL_PASS}
-      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - db:/var/lib/mysql
     healthcheck:

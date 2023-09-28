@@ -40,11 +40,11 @@ nginx:
 ``` env
 MYSQL_DB=ordersprintguest_db
 MYSQL_USER=ordersprintguest
-MYSQL_PASS=pleaseUseASuperSecurePassword!ReplaceMe
-MYSQL_ROOT_PASS=pleaseUseASuperSecurePassword!ReplaceMe
+MYSQL_PASSWORD=pleaseUseASuperSecurePasswordReplaceMe
+MYSQL_ROOT_PASSWORD=pleaseUseASuperSecurePasswordReplaceMe
 DB=mysql
 CODE=123456
-COMPOSE_PROJECT_NAME=ordersprintguest
+COMPOSE_PROJECT_NAME=ordersprintguest # will be prefixed to your container-names!
 ```
 
 1. Provide your own database settings via ``MYSQL_`` variable. This will be used during initial deployment.

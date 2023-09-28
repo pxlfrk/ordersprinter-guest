@@ -34,7 +34,7 @@ if [[ "$@" = "php-fpm" ]]; then
 		sed -i "s/'DB','file'/'DB','$DB'/g" $CONFIG_PHP
 		sed -i "s/'MYSQL_HOST','localhost'/'MYSQL_HOST','$MYSQL_HOST'/g" $CONFIG_PHP
 		sed -i "s/'MYSQL_USER',  'guestsystem'/'MYSQL_USER', '$MYSQL_USER'/g" $CONFIG_PHP
-		sed -i "s/'MYSQL_PASSWORD',  'verysecret'/'MYSQL_PASSWORD', '$MYSQL_PASS'/g" $CONFIG_PHP
+		sed -i "s/'MYSQL_PASSWORD',  'verysecret'/'MYSQL_PASSWORD', '$MYSQL_PASSWORD'/g" $CONFIG_PHP
 		sed -i "s/'MYSQL_DB', 'guestdb'/'MYSQL_DB', '$MYSQL_DB'/g" $CONFIG_PHP
 
 		chown -R www-data: gastsystem
