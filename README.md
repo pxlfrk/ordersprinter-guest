@@ -92,7 +92,7 @@ Now you can provide the following information.
 1. After the compose stack is running, head to your installation - either via IP & Port or your configured Domain (via a revery proxy) or any other alternatives
 1. Go to the URL `domain.tld/`**install.php** and you should see the setup-screen.
 1. Enter your CODE (specified in your `.env`)
-1. After success, remove the `install.php` file from your installation.
+1. After success, remove the `install.php` file from your installation: `docker exec -it COMPOSE_PROJECT_NAME_php rm /var/www/html/gastsystem/install.php`
 
 ## Updating
 
